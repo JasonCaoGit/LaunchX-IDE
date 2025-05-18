@@ -94,7 +94,7 @@
     "@opensumi/ide-debug": "3.8.1-next-1741253659.0",
     "@opensumi/ide-decoration": "3.8.1-next-1741253659.0",
     "@opensumi/ide-design": "3.8.1-next-1741253659.0",
-    "@opensumi/ide-editor": "3.8.1-next-1741253659.0",
+    "@opensumi/ide-editor": "3.8.2",
     "@opensumi/ide-electron-basic": "3.8.1-next-1741253659.0",
     "@opensumi/ide-explorer": "3.8.1-next-1741253659.0",
     "@opensumi/ide-express-file-server": "3.8.1-next-1741253659.0",
