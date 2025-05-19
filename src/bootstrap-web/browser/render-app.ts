@@ -12,16 +12,24 @@ export async function renderApp(opts: IClientAppOpts) {
   const hostname = window.location.hostname;
   const query = new URLSearchParams(window.location.search);
   // 线上的静态服务和 IDE 后端是一个 Server
-  const serverPort = process.env.DEVELOPMENT ? 8000 : window.location.port;
-  const staticServerPort = process.env.DEVELOPMENT ? 8080 : window.location.port;
-  const webviewEndpointPort = process.env.DEVELOPMENT ? 8899 : window.location.port;
+  const serverPort = process.env.DEVELOPMENT ? 8000 : (window.location.port || '8000');
+  const staticServerPort = process.env.DEVELOPMENT ? 8080 : (window.location.port || '8000');
+  const webviewEndpointPort = process.env.DEVELOPMENT ? 8899 : (window.location.port || '8000');
+  
+  // Debug logging
+  console.log('Debug connection info:');
+  console.log('window.location:', window.location.href);
+  console.log('hostname:', hostname);
+  console.log('port:', window.location.port);
+  console.log('serverPort:', serverPort);
+  
   opts.appName= 'CodeFuse IDE';
   opts.workspaceDir = opts.workspaceDir || query.get('workspaceDir') || process.env.WORKSPACE_DIR;
 
   opts.extensionDir = opts.extensionDir || process.env.EXTENSION_DIR;
 
   opts.wsPath = process.env.WS_PATH || (window.location.protocol == 'https:' ? `wss://${hostname}:${serverPort}` : `ws://${hostname}:${serverPort}`);
-  console.log(opts.wsPath)
+  console.log('WebSocket path:', opts.wsPath);
   opts.extWorkerHost = opts.extWorkerHost || process.env.EXTENSION_WORKER_HOST || `http://${hostname}:${staticServerPort}/ext-host/worker-host.js`;
   opts.staticServicePath = `http://${hostname}:${serverPort}`;
   const anotherHostName = process.env.WEBVIEW_HOST || hostname;

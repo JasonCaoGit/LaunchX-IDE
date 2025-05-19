@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codefuse-ide
+  labels:
+    app: codefuse-ide
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codefuse-ide
+  template:
+    metadata:
+      labels:
+        app: codefuse-ide
+    spec:
+      containers:
+      - name: codefuse-ide
+        image: gcr.io/codefuse-ide/launchx-ide:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: IDE_SERVER_PORT
+          value: "8000"
+        - name: WORKSPACE_DIR
+          value: "/workspace"
+        - name: EXTENSION_DIR
+          value: "/root/.sumi/extensions"
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+        - name: extensions
+          mountPath: /root/.sumi/extensions
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+      volumes:
+      - name: workspace
+        emptyDir: {}
+      - name: extensions
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codefuse-ide
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8000
+  selector:
+    app: codefuse-ide 
