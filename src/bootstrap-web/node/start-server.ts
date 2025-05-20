@@ -10,7 +10,7 @@ export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) 
   const app = new Koa();
   const deferred = new Deferred<http.Server>();
   process.env.EXT_MODE = 'js';
-  const port = process.env.IDE_SERVER_PORT || 8000;
+  const port = Number(process.env.PORT) || Number(process.env.IDE_SERVER_PORT) || 8000;
   const workspaceDir = process.env.WORKSPACE_DIR || process.env.NODE_ENV === 'production' ? path.join(__dirname, '../../workspace') : path.join(__dirname, '../../../workspace');
   const extensionDir = process.env.EXTENSION_DIR || process.env.NODE_ENV === 'production' ? path.join(__dirname, '../../extensions') : path.join(__dirname, '../../../extensions');
   const extensionHost = process.env.EXTENSION_HOST_ENTRY || 
@@ -64,7 +64,7 @@ export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) 
     setTimeout(process.exit, 0, 1);
   });
 
-  server.listen(port, () => {
+  server.listen(port, '0.0.0.0', () => {
     console.log(`Server listen on port ${port}`);
     deferred.resolve(server);
   });

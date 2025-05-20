@@ -3,7 +3,6 @@ FROM node:20 AS builder
 ENV WORKSPACE_DIR=/workspace
 ENV EXTENSION_DIR=/extensions
 ENV NODE_ENV=production
-ENV WS_PATH=ws://localhost:8000
 
 RUN mkdir -p ${WORKSPACE_DIR}  &&\
     mkdir -p ${EXTENSION_DIR}
