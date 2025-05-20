@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "test",
+    "test": "test-bb812",
+    "code": "code-f763b",
+    "hello": "hello-5cf44",
+    "okay'": "okay-25357",
+    "okay": "okay-25357",
+    "fine": "fine-ab173"
+  },
+  "targets": {},
+  "etags": {}
+}

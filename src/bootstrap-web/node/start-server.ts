@@ -4,6 +4,7 @@ import Koa from 'koa';
 import koaStatic from 'koa-static';
 import { Deferred } from '@opensumi/ide-core-common';
 import { IServerAppOpts, ServerApp, NodeModule } from '@opensumi/ide-core-node';
+import compress from 'koa-compress';
 
 export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) {
   const app = new Koa();
@@ -14,6 +15,10 @@ export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) 
   const extensionDir = process.env.EXTENSION_DIR || process.env.NODE_ENV === 'production' ? path.join(__dirname, '../../extensions') : path.join(__dirname, '../../../extensions');
   const extensionHost = process.env.EXTENSION_HOST_ENTRY || 
   process.env.NODE_ENV === 'production' ? path.join(__dirname, '..', '..', 'out/ext-host/index.js') : path.join(__dirname, '..', '..', '..', 'out/ext-host/index.js');
+
+  app.use(compress({
+    threshold: 0 // 0 表示所有文件都压缩
+  }));
 
   let opts: IServerAppOpts = {
     use: app.use.bind(app),
