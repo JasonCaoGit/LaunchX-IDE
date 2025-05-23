@@ -7,7 +7,11 @@ ENV NODE_ENV=production
 RUN mkdir -p ${WORKSPACE_DIR}  &&\
     mkdir -p ${EXTENSION_DIR}
 
-RUN apt-get update && apt-get install -y libsecret-1-dev
+RUN apt-get update && apt-get install -y \
+    libsecret-1-dev \
+    python3 \
+    make \
+    g++
 
 RUN npm config set registry https://registry.npmmirror.com
 
@@ -34,6 +38,8 @@ FROM node:20 AS app
 
 ENV WORKSPACE_DIR=/workspace
 ENV EXTENSION_DIR=/root/.sumi/extensions
+ENV NODE_ENV=production
+ENV IDE_SERVER_PORT=8000
 
 RUN mkdir -p ${WORKSPACE_DIR}  &&\
     mkdir -p ${EXTENSION_DIR} &&\
@@ -46,5 +52,9 @@ COPY --from=builder /build/out /release/out
 COPY --from=builder /build/node_modules /release/node_modules
 
 EXPOSE 8000
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
 
 CMD [ "node", "./out/node/index.js"]

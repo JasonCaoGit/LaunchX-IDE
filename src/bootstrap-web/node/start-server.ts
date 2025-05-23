@@ -20,49 +20,57 @@ export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) 
     threshold: 0 // 0 表示所有文件都压缩
   }));
 
-  let opts: IServerAppOpts = {
-    use: app.use.bind(app),
-    processCloseExitThreshold: 5 * 60 * 1000,
-    terminalPtyCloseThreshold: 5 * 60 * 1000,
-    staticAllowOrigin: '*',
-    staticAllowPath: [
-      workspaceDir,
-      extensionDir,
-      '/',
-    ],
-    extHost: extensionHost,
-  };
-
-  opts.marketplace = {
-    showBuiltinExtensions: true,
-  }
-  
-  if (Array.isArray(arg1)) {
-    opts = {
-      ...opts,
-       modulesInstances: arg1,
-      };
-  } else {
-    opts = {
-      ...opts,
-      ...arg1,
+    let opts: IServerAppOpts = {
+      use: app.use.bind(app),
+      processCloseExitThreshold: 5 * 60 * 1000,
+      terminalPtyCloseThreshold: 5 * 60 * 1000,
+      staticAllowOrigin: '*',
+      staticAllowPath: [
+        workspaceDir,
+        extensionDir,
+        '/',
+      ],
+      extHost: extensionHost,
     };
-  }
 
-  const serverApp = new ServerApp(opts);
-  const server = http.createServer(app.callback());
+    opts.marketplace = {
+      showBuiltinExtensions: true,
+    }
+    
+    if (Array.isArray(arg1)) {
+      opts = {
+        ...opts,
+         modulesInstances: arg1,
+        };
+    } else {
+      opts = {
+        ...opts,
+        ...arg1,
+      };
+    }
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(koaStatic(path.join(__dirname, '../../out')));
-  }
+    console.log('Initializing server app...');
+    const serverApp = new ServerApp(opts);
+    const server = http.createServer(app.callback());
 
-  await serverApp.start(server);
+    if (process.env.NODE_ENV === 'production') {
+      // In production, serve static files from /release/out
+      const staticPath = baseDir;
+      console.log('Serving static files from:', staticPath);
+      if (!fs.existsSync(staticPath)) {
+        throw new Error(`Static files directory does not exist: ${staticPath}`);
+      }
+      app.use(koaStatic(staticPath));
+    }
 
-  server.on('error', (err) => {
-    deferred.reject(err);
-    console.error('Server error: ' + err.message);
-    setTimeout(process.exit, 0, 1);
-  });
+    console.log('Starting server app...');
+    await serverApp.start(server);
+
+    server.on('error', (err) => {
+      deferred.reject(err);
+      console.error('Server error: ' + err.message);
+      setTimeout(process.exit, 0, 1);
+    });
 
   server.listen(port, '0.0.0.0', () => {
     console.log(`Server listen on port ${port}`);
