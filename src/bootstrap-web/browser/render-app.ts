@@ -19,8 +19,9 @@ export async function renderApp(opts: IClientAppOpts) {
   opts.workspaceDir = opts.workspaceDir || query.get('workspaceDir') || process.env.WORKSPACE_DIR;
 
   opts.extensionDir = opts.extensionDir || process.env.EXTENSION_DIR;
-
-  opts.wsPath = process.env.WS_PATH || (window.location.protocol == 'https:' ? `wss://${hostname}:${serverPort}` : `ws://${hostname}:${serverPort}`);
+  // opts.wsPath = 'wss://codefuse-ide-23074841685.asia-east1.run.app';
+  opts.wsPath = 'wss://launchx-ide-23074841685.us-central1.run.app';
+  // opts.wsPath = process.env.WS_PATH || (window.location.protocol == 'https:' ? `wss://${hostname}:${serverPort}` : `ws://${hostname}:${serverPort}`);
   console.log(opts.wsPath)
   opts.extWorkerHost = opts.extWorkerHost || process.env.EXTENSION_WORKER_HOST || `http://${hostname}:${staticServerPort}/ext-host/worker-host.js`;
   opts.staticServicePath = `http://${hostname}:${serverPort}`;
