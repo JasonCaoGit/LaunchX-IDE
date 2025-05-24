@@ -15,7 +15,7 @@ export const localizationBundle = {
 
     'preference.ai.model.title': '补全模型配置',
     'preference.ai.model.baseUrl': 'API URL 前缀',
-    'preference.ai.model.apiKey': 'API Key',
+    'preference.ai.model.apiKey': 'API Key哈哈啊啊',
     'preference.ai.model.code': '代码 > 补全',
     'preference.ai.model.code.modelName': '代码 > 模型名称',
     'preference.ai.model.code.systemPrompt': '代码 > 系统提示词',
