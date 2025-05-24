@@ -128,7 +128,7 @@
     "@opensumi/ide-storage": "3.8.1-next-1741253659.0",
     "@opensumi/ide-task": "3.8.1-next-1741253659.0",
     "@opensumi/ide-terminal-next": "3.8.1-next-1741253659.0",
-    "@opensumi/ide-testing": "3.8.1-next-1741253659.0",
+    "@opensumi/ide-testing": "3.9.0",
     "@opensumi/ide-theme": "3.8.1-next-1741253659.0",
     "@opensumi/ide-toolbar": "3.8.1-next-1741253659.0",
     "@opensumi/ide-variable": "3.8.1-next-1741253659.0",
