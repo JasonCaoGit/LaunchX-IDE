@@ -1,0 +1,87 @@
+diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js b/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
+index 50c060b..29eda5c 100644
+--- a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
++++ b/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
+@@ -46,8 +46,7 @@ let ChatProxyService = ChatProxyService_1 = class ChatProxyService extends ide_c
+             clientId: this.applicationService.clientId,
+             model,
+             modelId,
+-            apiKey,
+-            baseURL,
++            apiKey:'fake_key',
+             system: agent === null || agent === void 0 ? void 0 : agent.metadata.systemPrompt,
+         };
+     }
+diff --git a/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts b/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts
+index 10ba32f..8a259aa 100644
+--- a/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts
++++ b/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts
+@@ -522,30 +522,30 @@ export class AINativeBrowserContribution
+       registry.registerSettingSection(AI_NATIVE_SETTING_GROUP_ID, {
+         title: localize('preference.ai.native.llm.apiSettings.title'),
+         preferences: [
+-          {
+-            id: AINativeSettingSectionsId.LLMModelSelection,
+-            localized: 'preference.ai.native.llm.model.selection',
+-          },
+-          {
+-            id: AINativeSettingSectionsId.ModelID,
+-            localized: 'preference.ai.native.llm.model.id',
+-          },
+-          {
+-            id: AINativeSettingSectionsId.DeepseekApiKey,
+-            localized: 'preference.ai.native.deepseek.apiKey',
+-          },
+-          {
+-            id: AINativeSettingSectionsId.AnthropicApiKey,
+-            localized: 'preference.ai.native.anthropic.apiKey',
+-          },
+-          {
+-            id: AINativeSettingSectionsId.OpenaiApiKey,
+-            localized: 'preference.ai.native.openai.apiKey',
+-          },
+-          {
+-            id: AINativeSettingSectionsId.OpenaiBaseURL,
+-            localized: 'preference.ai.native.openai.baseURL',
+-          },
++          // {
++          //   id: AINativeSettingSectionsId.LLMModelSelection,
++          //   localized: 'preference.ai.native.llm.model.selection',
++          // },
++          // {
++          //   id: AINativeSettingSectionsId.ModelID,
++          //   localized: 'preference.ai.native.llm.model.id',
++          // },
++          // {
++          //   id: AINativeSettingSectionsId.DeepseekApiKey,
++          //   localized: 'preference.ai.native.deepseek.apiKey',
++          // },
++          // {
++          //   id: AINativeSettingSectionsId.AnthropicApiKey,
++          //   localized: 'preference.ai.native.anthropic.apiKey',
++          // },
++          // {
++          //   id: AINativeSettingSectionsId.OpenaiApiKey,
++          //   localized: 'preference.ai.native.openai.apiKey',
++          // },
++          // {
++          //   id: AINativeSettingSectionsId.OpenaiBaseURL,
++          //   localized: 'preference.ai.native.openai.baseURL',
++          // },
+         ],
+       });
+     }
+diff --git a/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts b/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts
+index 479c5ba..b9c7956 100644
+--- a/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts
++++ b/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts
+@@ -10,7 +10,9 @@ import { BaseLanguageModel } from '../base-language-model';
+ @Injectable()
+ export class OpenAIModel extends BaseLanguageModel {
+   protected initializeProvider(options: IAIBackServiceOption): OpenAIProvider {
++    
+     const apiKey = options.apiKey;
++    console.log('apiKey找到了', apiKey);
+     if (!apiKey) {
+       throw new Error(`Please provide OpenAI API Key in preferences (${AINativeSettingSectionsId.OpenaiApiKey})`);
+     }

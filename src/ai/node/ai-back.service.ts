@@ -17,6 +17,11 @@ import { AIModelService } from './model.service'
 
 @Injectable()
 export class AIBackService extends BaseAIBackService implements IAIBackService {
+
+  private apiCallCount = 0;
+
+  private lastResetDate = this.getTodayString();
+
   private logger: INodeLogger
 
   @Autowired(ILogServiceManager)
@@ -42,14 +47,31 @@ export class AIBackService extends BaseAIBackService implements IAIBackService {
     this.logger = this.loggerManager.getLogger('ai' as any);
   }
 
+  private getTodayString(): string {
+    const now = new Date();
+    // Pad month and day with zeros if needed
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${now.getFullYear()}-${month}-${day}`;
+  }
+
   override async requestStream(input: string, options: IAIBackServiceOption, cancelToken?: CancellationToken) {
+    const today= this.getTodayString();
+    if(today !==this.lastResetDate){
+      this.apiCallCount=0;
+      this.lastResetDate=today;
+    }
+    if(this.apiCallCount>=40){
+      throw new Error('API call limit reached');
+    }
+    this.apiCallCount++;
     const chatReadableStream = new ChatReadableStream();
     cancelToken?.onCancellationRequested(() => {
       chatReadableStream.abort();
     });
 
     const model = options.model;
-
+    options.apiKey = process.env.OPENAI_API_KEY;
     if (model === 'openai') {
       this.openaiModel.request(input, chatReadableStream, options, cancelToken);
     } else if (model === 'deepseek') {

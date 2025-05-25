@@ -7,7 +7,7 @@ import { ShellIntegrationService } from './shell-integration'
 import { AIBackService } from './ai-back.service'
 import { AIModelServiceProxy, AIModelService } from './model.service'
 import { AIModelServicePath, IAIModelServiceProxy } from '../common'
-
+import 'dotenv/config';
 @Injectable()
 export class AIServiceModule extends NodeModule {
   providers: Provider[] = [
