@@ -1,3 +1,30 @@
+diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js b/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
+index 472a9bd..5c712dd 100644
+--- a/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
++++ b/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
+@@ -259,22 +259,6 @@ let AINativeBrowserContribution = class AINativeBrowserContribution {
+                         id: ide_core_browser_1.AINativeSettingSectionsId.ModelID,
+                         localized: 'preference.ai.native.llm.model.id',
+                     },
+-                    {
+-                        id: ide_core_browser_1.AINativeSettingSectionsId.DeepseekApiKey,
+-                        localized: 'preference.ai.native.deepseek.apiKey',
+-                    },
+-                    {
+-                        id: ide_core_browser_1.AINativeSettingSectionsId.AnthropicApiKey,
+-                        localized: 'preference.ai.native.anthropic.apiKey',
+-                    },
+-                    {
+-                        id: ide_core_browser_1.AINativeSettingSectionsId.OpenaiApiKey,
+-                        localized: 'preference.ai.native.openai.apiKey',
+-                    },
+-                    {
+-                        id: ide_core_browser_1.AINativeSettingSectionsId.OpenaiBaseURL,
+-                        localized: 'preference.ai.native.openai.baseURL',
+-                    },
+                 ],
+             });
+         }
 diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js b/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
 index 50c060b..29eda5c 100644
 --- a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
