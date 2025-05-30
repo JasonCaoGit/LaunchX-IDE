@@ -118,7 +118,7 @@
     "@opensumi/ide-outline": "3.8.1-next-1741253659.0",
     "@opensumi/ide-output": "3.8.1-next-1741253659.0",
     "@opensumi/ide-overlay": "3.8.1-next-1741253659.0",
-    "@opensumi/ide-preferences": "3.8.1-next-1741253659.0",
+    "@opensumi/ide-preferences": "3.9.0",
     "@opensumi/ide-process": "3.8.1-next-1741253659.0",
     "@opensumi/ide-quick-open": "3.8.1-next-1741253659.0",
     "@opensumi/ide-remote-opener": "3.8.1-next-1741253659.0",
