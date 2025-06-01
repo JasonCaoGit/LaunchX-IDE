@@ -4,12 +4,15 @@ import Koa from 'koa';
 import koaStatic from 'koa-static';
 import { Deferred } from '@opensumi/ide-core-common';
 import { IServerAppOpts, ServerApp, NodeModule } from '@opensumi/ide-core-node';
+import * as fs from 'fs';
+
 
 export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) {
   const app = new Koa();
   const deferred = new Deferred<http.Server>();
   process.env.EXT_MODE = 'js';
-  const port = process.env.IDE_SERVER_PORT || 8000;
+  const port =   8080;
+  // process.env.IDE_SERVER_PORT || 8000;
   const workspaceDir = process.env.WORKSPACE_DIR || process.env.NODE_ENV === 'production' ? path.join(__dirname, '../../workspace') : path.join(__dirname, '../../../workspace');
   const extensionDir = process.env.EXTENSION_DIR || process.env.NODE_ENV === 'production' ? path.join(__dirname, '../../extensions') : path.join(__dirname, '../../../extensions');
   const extensionHost = process.env.EXTENSION_HOST_ENTRY || 
@@ -47,11 +50,24 @@ export async function startServer(arg1: NodeModule[] | Partial<IServerAppOpts>) 
   const serverApp = new ServerApp(opts);
   const server = http.createServer(app.callback());
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(koaStatic(path.join(__dirname, '../../out')));
-  }
+  // Always serve static files from the '../out' directory, no matter if it's production or development.
+  // This makes sure the frontend is always available at the root path.
+  app.use(koaStatic(path.join(__dirname, '..')));
+
+  // SPA fallback: serve index.html for all GET requests that aren't found
+// app.use(async (ctx, next) => {
+//   await next();
+//   if (ctx.status === 404 && ctx.method === 'GET') {
+//     ctx.type = 'html';
+//     ctx.body = fs.createReadStream(path.join(__dirname, '../index.html'));
+//     console.log(__dirname)
+//   }
+// });
 
   await serverApp.start(server);
+  console.log('PORT:', process.env.PORT);
+console.log('__dirname:', __dirname);
+console.log('Serving static from:', path.join(__dirname, '..'));
 
   server.on('error', (err) => {
     deferred.reject(err);
