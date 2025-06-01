@@ -98,15 +98,18 @@ export class AIModelContribution implements PreferenceContribution, SettingContr
   onDidStart(app: IClientApp): MaybePromise<void> {
     const delayer = new Delayer(100);
     const values: Record<string, any> = {}
+    console.log('ModelSettingIdKeys', ModelSettingIdKeys);
     ModelSettingIdKeys.forEach((idKey) => {
+      
       values[idKey] = this.preferenceService.getValid(ModelSettingId[idKey])
       this.preferenceService.onSpecificPreferenceChange(ModelSettingId[idKey], (change) => {
         values[idKey] = change.newValue
         delayer.trigger(() => this.setModeConfig(values))
       })
     })
+    console.log('values', values);
     delayer.trigger(() => this.setModeConfig(values));
-    this.checkModelConfig();
+  
   }
 
   registerSetting(registry: ISettingRegistry): void {
@@ -157,27 +160,10 @@ export class AIModelContribution implements PreferenceContribution, SettingContr
     });
   }
 
-  private async checkModelConfig() {
-    const requirePreference = [
-      AINativeSettingSectionsId.DeepseekApiKey,
-      AINativeSettingSectionsId.OpenaiApiKey,
-      AINativeSettingSectionsId.AnthropicApiKey,
-    ];
-
-    const hasRequirePreference = requirePreference.some(preference => !!this.preferenceService.getValid(preference));
-    if (!hasRequirePreference) {
-      this.preferenceService.has(AINativeSettingSectionsId.DeepseekApiKey);
-      const res = await this.messageService.info(localize('ai.model.noConfig'), [
-        localize('ai.model.go')
-      ]);
-      if (res === localize('ai.model.go')) {
-        await this.commandService.executeCommand(COMMON_COMMANDS.OPEN_PREFERENCES.id)
-        this.preferenceSettingsService.scrollToPreference(AINativeSettingSectionsId.LLMModelSelection);
-      }
-    }
-  }
+ 
 
   private setModeConfig(values: Record<string, any>) {
+    console.log('setModeConfig', values);
     this.modelService.setConfig(values)
     this.output.appendLine(`model config: ${JSON.stringify(values, null, 2)}`)
   }
