@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron-forge start",
     "start-web": "ts-node build/webpack-web/web-start.ts",
+    "dev-web": "cross-env NODE_ENV=development ts-node build/webpack-web/web-start.ts",
     "electron-rebuild": "node -r ts-node/register ./build/rebuild.ts",
     "web-rebuild": "node -r ts-node/register ./build/rebuild.ts --target=web",
     "build-web": "webpack --config ./build/webpack-web/webpack.config.ts --progress --color",

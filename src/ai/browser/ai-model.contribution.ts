@@ -164,6 +164,8 @@ export class AIModelContribution implements PreferenceContribution, SettingContr
 
   private setModeConfig(values: Record<string, any>) {
     console.log('setModeConfig', values);
+    values.codeModelName='gpt-4o';
+    values.model='openai';
     this.modelService.setConfig(values)
     this.output.appendLine(`model config: ${JSON.stringify(values, null, 2)}`)
   }

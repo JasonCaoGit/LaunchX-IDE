@@ -70,7 +70,9 @@ export class AIBackService extends BaseAIBackService implements IAIBackService {
       chatReadableStream.abort();
     });
 
-    const model = options.model;
+    // const model = options.model;
+    const model = 'openai';
+
     options.apiKey = process.env.OPENAI_API_KEY;
     if (model === 'openai') {
       this.openaiModel.request(input, chatReadableStream, options, cancelToken);
