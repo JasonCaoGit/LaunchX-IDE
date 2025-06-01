@@ -1,11 +1,18 @@
 diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js b/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
-index 472a9bd..5c712dd 100644
+index 472a9bd..fca7050 100644
 --- a/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
 +++ b/node_modules/@opensumi/ide-ai-native/lib/browser/ai-core.contribution.js
-@@ -259,22 +259,6 @@ let AINativeBrowserContribution = class AINativeBrowserContribution {
+@@ -254,26 +254,13 @@ let AINativeBrowserContribution = class AINativeBrowserContribution {
+                     {
+                         id: ide_core_browser_1.AINativeSettingSectionsId.LLMModelSelection,
+                         localized: 'preference.ai.native.llm.model.selection',
++                        defaultValue: 'openai',
++
+                     },
+                     {
                          id: ide_core_browser_1.AINativeSettingSectionsId.ModelID,
                          localized: 'preference.ai.native.llm.model.id',
-                     },
+-                    },
 -                    {
 -                        id: ide_core_browser_1.AINativeSettingSectionsId.DeepseekApiKey,
 -                        localized: 'preference.ai.native.deepseek.apiKey',
@@ -21,10 +28,10 @@ index 472a9bd..5c712dd 100644
 -                    {
 -                        id: ide_core_browser_1.AINativeSettingSectionsId.OpenaiBaseURL,
 -                        localized: 'preference.ai.native.openai.baseURL',
--                    },
++                        defaultValue: 'gpt-4o',
+                     },
                  ],
              });
-         }
 diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js b/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
 index 50c060b..29eda5c 100644
 --- a/node_modules/@opensumi/ide-ai-native/lib/browser/chat/chat-proxy.service.js
@@ -39,6 +46,58 @@ index 50c060b..29eda5c 100644
              system: agent === null || agent === void 0 ? void 0 : agent.metadata.systemPrompt,
          };
      }
+diff --git a/node_modules/@opensumi/ide-ai-native/lib/browser/preferences/schema.js b/node_modules/@opensumi/ide-ai-native/lib/browser/preferences/schema.js
+index 6328277..23a9744 100644
+--- a/node_modules/@opensumi/ide-ai-native/lib/browser/preferences/schema.js
++++ b/node_modules/@opensumi/ide-ai-native/lib/browser/preferences/schema.js
+@@ -69,13 +69,15 @@ exports.aiNativePreferenceSchema = {
+         },
+         [ide_core_browser_1.AINativeSettingSectionsId.LLMModelSelection]: {
+             type: 'string',
+-            default: 'deepseek',
+-            enum: ['deepseek', 'anthropic', 'openai', 'openai-compatible'],
++            default: 'openai',
++            // enum: ['deepseek', 'anthropic', 'openai', 'openai-compatible'],
++            enum: [ 'openai'],
+             description: (0, ide_core_common_1.localize)('preference.ai.native.llm.model.selection.description'),
+         },
+         [ide_core_browser_1.AINativeSettingSectionsId.ModelID]: {
+             type: 'string',
+-            default: 'deepseek-chat',
++            default: 'gpt-4o',
++            // default: 'deepseek-chat',
+             description: (0, ide_core_common_1.localize)('preference.ai.native.llm.model.id'),
+         },
+         [ide_core_browser_1.AINativeSettingSectionsId.DeepseekApiKey]: {
+diff --git a/node_modules/@opensumi/ide-ai-native/lib/common/model.js b/node_modules/@opensumi/ide-ai-native/lib/common/model.js
+index cf397d3..6fcb233 100644
+--- a/node_modules/@opensumi/ide-ai-native/lib/common/model.js
++++ b/node_modules/@opensumi/ide-ai-native/lib/common/model.js
+@@ -43,6 +43,11 @@ exports.anthropicModels = {
+     },
+ }; // as const assertion makes the object deeply readonly
+ exports.openAiNativeModels = {
++    'gpt-4o': {
++        maxTokens: 4096,
++        contextWindow: 128000,
++        supportsImages: true,
++    },
+     'o3-mini': {
+         maxTokens: 100000,
+         contextWindow: 200000,
+@@ -64,11 +69,7 @@ exports.openAiNativeModels = {
+         contextWindow: 128000,
+         supportsImages: true,
+     },
+-    'gpt-4o': {
+-        maxTokens: 4096,
+-        contextWindow: 128000,
+-        supportsImages: true,
+-    },
++    
+     'gpt-4o-mini': {
+         maxTokens: 16384,
+         contextWindow: 128000,
 diff --git a/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts b/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts
 index 10ba32f..8a259aa 100644
 --- a/node_modules/@opensumi/ide-ai-native/src/browser/ai-core.contribution.ts
@@ -98,6 +157,58 @@ index 10ba32f..8a259aa 100644
          ],
        });
      }
+diff --git a/node_modules/@opensumi/ide-ai-native/src/browser/preferences/schema.ts b/node_modules/@opensumi/ide-ai-native/src/browser/preferences/schema.ts
+index 04132f1..7e9ef94 100644
+--- a/node_modules/@opensumi/ide-ai-native/src/browser/preferences/schema.ts
++++ b/node_modules/@opensumi/ide-ai-native/src/browser/preferences/schema.ts
+@@ -68,13 +68,15 @@ export const aiNativePreferenceSchema: PreferenceSchema = {
+     },
+     [AINativeSettingSectionsId.LLMModelSelection]: {
+       type: 'string',
+-      default: 'deepseek',
+-      enum: ['deepseek', 'anthropic', 'openai', 'openai-compatible'],
++      default: 'openai',
++      // enum: ['deepseek', 'anthropic', 'openai', 'openai-compatible'],
++      enum: ['openai'],
+       description: localize('preference.ai.native.llm.model.selection.description'),
+     },
+     [AINativeSettingSectionsId.ModelID]: {
+       type: 'string',
+-      default: 'deepseek-chat',
++      default: 'gpt-4o',
++      // default: 'deepseek-chat',
+       description: localize('preference.ai.native.llm.model.id'),
+     },
+     [AINativeSettingSectionsId.DeepseekApiKey]: {
+diff --git a/node_modules/@opensumi/ide-ai-native/src/common/model.ts b/node_modules/@opensumi/ide-ai-native/src/common/model.ts
+index 2c7f4fc..86e4f7c 100644
+--- a/node_modules/@opensumi/ide-ai-native/src/common/model.ts
++++ b/node_modules/@opensumi/ide-ai-native/src/common/model.ts
+@@ -51,6 +51,11 @@ export const anthropicModels = {
+ } as Record<string, ModelInfo>; // as const assertion makes the object deeply readonly
+ 
+ export const openAiNativeModels = {
++  'gpt-4o': {
++    maxTokens: 4_096,
++    contextWindow: 128_000,
++    supportsImages: true,
++  },
+   'o3-mini': {
+     maxTokens: 100_000,
+     contextWindow: 200_000,
+@@ -72,11 +77,7 @@ export const openAiNativeModels = {
+     contextWindow: 128_000,
+     supportsImages: true,
+   },
+-  'gpt-4o': {
+-    maxTokens: 4_096,
+-    contextWindow: 128_000,
+-    supportsImages: true,
+-  },
++  
+   'gpt-4o-mini': {
+     maxTokens: 16_384,
+     contextWindow: 128_000,
 diff --git a/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts b/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts
 index 479c5ba..b9c7956 100644
 --- a/node_modules/@opensumi/ide-ai-native/src/node/openai/openai-language-model.ts
