@@ -60,10 +60,10 @@ jspm_packages/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
-
+.specstory/
 # next.js build output
 .next
-
+opensumi/
 # nuxt.js build output
 .nuxt
 

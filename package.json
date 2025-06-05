@@ -85,6 +85,7 @@
     "yauzl": "^3.1.3"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.16.0",
     "@opensumi/ide-addons": "3.8.1-next-1741253659.0",
     "@opensumi/ide-ai-native": "3.8.1-next-1741253659.0",
     "@opensumi/ide-comments": "3.8.1-next-1741253659.0",

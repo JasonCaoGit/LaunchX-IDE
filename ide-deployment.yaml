@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: launchx-ide
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: launchx-ide
+  template:
+    metadata:
+      labels:
+        app: launchx-ide
+    spec:
+      containers:
+        - name: launchx-ide
+          image: gcr.io/launchx-jc/launchx-ide:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: WS_PATH
+              value: "ws://34.133.147.173/"
+          volumeMounts:
+          - mountPath: /workspace
+            name: workspace-volume
+        - name: nginx
+          image: nginx:stable
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d
+          
+      volumes:
+      - name: workspace-volume
+        persistentVolumeClaim:
+          claimName: workspace-pvc
+      - name: nginx-config
+        configMap:
+          name: launchx-nginx-config
+      
