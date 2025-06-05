@@ -48,7 +48,7 @@
     "asar": "^3.2.0",
     "chalk": "^4.0.0",
     "conventional-changelog-cli": "^5.0.0",
-    "copy-webpack-plugin": "^12.0.2",
+    "copy-webpack-plugin": "^13.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6",
     "debug": "^4.3.7",
