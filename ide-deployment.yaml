@@ -21,23 +21,14 @@ spec:
             - name: PORT
               value: "8080"
             - name: WS_PATH
-              value: "ws://34.133.147.173/"
+              value: "wss://launchx.studio"
           volumeMounts:
           - mountPath: /workspace
             name: workspace-volume
-        - name: nginx
-          image: nginx:stable
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: nginx-config
-              mountPath: /etc/nginx/conf.d
+
           
       volumes:
       - name: workspace-volume
         persistentVolumeClaim:
           claimName: workspace-pvc
-      - name: nginx-config
-        configMap:
-          name: launchx-nginx-config
-      
+   

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: launchx-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"  # Use NGINX Ingress controller
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # This is for cert-managerß
+spec:
+  rules:
+    - host: launchx.studio
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: launchx-ide-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - launchx.studio
+      secretName: launchx-studio-tls

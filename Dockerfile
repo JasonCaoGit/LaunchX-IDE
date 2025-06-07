@@ -44,7 +44,6 @@ RUN mkdir -p ${WORKSPACE_DIR}  &&\
 # 设置工作目录
 WORKDIR /release
 # coping from the original root
-COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /build/out /release/out
 COPY --from=builder /build/node_modules /release/node_modules
 
