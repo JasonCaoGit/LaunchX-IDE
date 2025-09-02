@@ -105,7 +105,7 @@
     "@opensumi/ide-extension-storage": "3.8.1-next-1741253659.0",
     "@opensumi/ide-file-scheme": "3.8.1-next-1741253659.0",
     "@opensumi/ide-file-search": "3.8.1-next-1741253659.0",
-    "@opensumi/ide-file-service": "3.8.1-next-1741253659.0",
+    "@opensumi/ide-file-service": "3.9.0",
     "@opensumi/ide-file-tree-next": "3.8.1-next-1741253659.0",
     "@opensumi/ide-i18n": "3.8.1-next-1741253659.0",
     "@opensumi/ide-keymaps": "3.8.1-next-1741253659.0",
