@@ -108,7 +108,7 @@
     "@opensumi/ide-file-service": "3.8.1-next-1741253659.0",
     "@opensumi/ide-file-tree-next": "3.8.1-next-1741253659.0",
     "@opensumi/ide-i18n": "3.8.1-next-1741253659.0",
-    "@opensumi/ide-keymaps": "3.8.1-next-1741253659.0",
+    "@opensumi/ide-keymaps": "3.9.0",
     "@opensumi/ide-logs": "3.8.1-next-1741253659.0",
     "@opensumi/ide-main-layout": "3.8.1-next-1741253659.0",
     "@opensumi/ide-markdown": "3.8.1-next-1741253659.0",
